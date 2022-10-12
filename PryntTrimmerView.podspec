@@ -17,7 +17,7 @@ component that indicates the portion of the video selected, thanks to image thum
 Second tool is a crop view, to preview a video and select the part of the video you want to crop.
                        DESC
 
-  s.homepage         = 'https://github.com/HHK1/PryntTrimmerView'
+  s.homepage         = 'https://github.com/In-A-Name-Studios/PryntTrimmerView.git'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'henryhuck@hotmail.fr' => 'henryhuck@hotmail.fr' }
   s.source           = { :git => 'https://github.com/HHK1/PryntTrimmerView.git', :tag => s.version.to_s }
