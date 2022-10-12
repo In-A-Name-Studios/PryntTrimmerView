@@ -37,13 +37,13 @@ class AssetSelectionViewController: UIViewController {
         PHCachingImageManager().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
             DispatchQueue.main.async {
                 if let avAsset = avAsset {
-                    self.loadAsset(avAsset)
+                    self.loadAsset(.init(asset: avAsset))
                 }
             }
         }
     }
 
-    func loadAsset(_ asset: AVAsset) {
+    func loadAsset(_ asset: AVPlayerItem) {
         // override in subclass
     }
 }

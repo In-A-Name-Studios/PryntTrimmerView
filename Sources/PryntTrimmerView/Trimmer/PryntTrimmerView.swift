@@ -270,7 +270,7 @@ public protocol TrimmerViewDelegate: AnyObject {
 
     // MARK: - Asset loading
 
-    override func assetDidChange(newAsset: AVAsset?) {
+    override func assetDidChange(newAsset: AVPlayerItem?) {
         super.assetDidChange(newAsset: newAsset)
         resetHandleViewPosition()
     }

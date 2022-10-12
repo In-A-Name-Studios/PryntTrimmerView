@@ -28,7 +28,7 @@ class VideoCropperViewController: AssetSelectionViewController {
         loadAssetRandomly()
     }
 
-    override func loadAsset(_ asset: AVAsset) {
+    override func loadAsset(_ asset: AVPlayerItem) {
         selectThumbView.asset = asset
         selectThumbView.delegate = self
         videoCropView.asset = asset
@@ -44,7 +44,7 @@ class VideoCropperViewController: AssetSelectionViewController {
     @IBAction func crop(_ sender: Any) {
 
         if let selectedTime = selectThumbView.selectedTime, let asset = videoCropView.asset {
-            let generator = AVAssetImageGenerator(asset: asset)
+            let generator = AVAssetImageGenerator(asset: asset.asset)
             generator.requestedTimeToleranceBefore = CMTime.zero
             generator.requestedTimeToleranceAfter = CMTime.zero
             generator.appliesPreferredTrackTransform = true
@@ -63,7 +63,7 @@ class VideoCropperViewController: AssetSelectionViewController {
 
     func prepareAssetComposition() throws {
 
-        guard let asset = videoCropView.asset, let videoTrack = asset.tracks(withMediaType: AVMediaType.video).first else {
+        guard let asset = videoCropView.asset, let videoTrack = asset.asset.tracks(withMediaType: AVMediaType.video).first else {
             return
         }
 
@@ -78,7 +78,7 @@ class VideoCropperViewController: AssetSelectionViewController {
 
         try videoCompositionTrack.insertTimeRange(trackTimeRange, of: videoTrack, at: CMTime.zero)
 
-        if let audioTrack = asset.tracks(withMediaType: AVMediaType.audio).first {
+        if let audioTrack = asset.asset.tracks(withMediaType: AVMediaType.audio).first {
             let audioCompositionTrack = assetComposition.addMutableTrack(withMediaType: AVMediaType.audio,
                                                                       preferredTrackID: kCMPersistentTrackID_Invalid)
             try audioCompositionTrack?.insertTimeRange(trackTimeRange, of: audioTrack, at: CMTime.zero)

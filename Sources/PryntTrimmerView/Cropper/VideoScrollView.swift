@@ -44,14 +44,14 @@ class VideoScrollView: UIView {
         scrollView.topAnchor.constraint(equalTo: topAnchor).isActive = true
     }
 
-    func setupVideo(with asset: AVAsset) {
+    func setupVideo(with asset: AVPlayerItem) {
 
-        guard let track = asset.tracks(withMediaType: AVMediaType.video).first else { return }
+        guard let track = asset.asset.tracks(withMediaType: AVMediaType.video).first else { return }
         let trackSize = track.naturalSize.applying(track.preferredTransform)
         assetSize = CGSize(width: abs(trackSize.width), height: abs(trackSize.height))
 
         scrollView.zoomScale = 1.0 // Reset zoom scale before changing the frame of the content view.
-        playerItem = AVPlayerItem(asset: asset)
+        playerItem = asset
         let playerFrame = CGRect(x: 0, y: 0, width: assetSize.width, height: assetSize.height)
         addVideoLayer(with: playerFrame)
 

@@ -20,7 +20,7 @@ public class VideoCropView: UIView {
     let cropMaskView = CropMaskView()
 
     /// The asset being cropped. Setting the property will load the asset in the `AVPlayer` contained in the scroll view.
-    public var asset: AVAsset? {
+    public var asset: AVPlayerItem? {
         didSet {
             if let asset = asset {
                 videoScrollView.setupVideo(with: asset)

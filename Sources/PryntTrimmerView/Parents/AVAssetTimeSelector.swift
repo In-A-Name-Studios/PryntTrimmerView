@@ -23,7 +23,7 @@ public class AVAssetTimeSelector: UIView, UIScrollViewDelegate {
     }
 
     /// The asset to be displayed in the underlying scroll view. Setting a new asset will automatically refresh the thumbnails.
-    public var asset: AVAsset? {
+    public var asset: AVPlayerItem? {
         didSet {
             assetDidChange(newAsset: asset)
         }
@@ -66,7 +66,7 @@ public class AVAssetTimeSelector: UIView, UIScrollViewDelegate {
         assetPreview.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     }
 
-    func assetDidChange(newAsset: AVAsset?) {
+    func assetDidChange(newAsset: AVPlayerItem?) {
         if let asset = newAsset {
             assetPreview.regenerateThumbnails(for: asset)
         }

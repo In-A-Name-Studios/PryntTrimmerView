@@ -47,19 +47,19 @@ class VideoTrimmerViewController: AssetSelectionViewController {
         }
     }
 
-    override func loadAsset(_ asset: AVAsset) {
+    override func loadAsset(_ asset: AVPlayerItem) {
 
         trimmerView.asset = asset
         trimmerView.delegate = self
         addVideoPlayer(with: asset, playerView: playerView)
     }
 
-    private func addVideoPlayer(with asset: AVAsset, playerView: UIView) {
-        let playerItem = AVPlayerItem(asset: asset)
-        player = AVPlayer(playerItem: playerItem)
+    private func addVideoPlayer(with asset: AVPlayerItem, playerView: UIView) {
+//        let playerItem = AVPlayerItem(asset: asset)
+        player = AVPlayer(playerItem: asset)
 
         NotificationCenter.default.addObserver(self, selector: #selector(VideoTrimmerViewController.itemDidFinishPlaying(_:)),
-                                               name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
+                                               name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: asset)
 
         let layer: AVPlayerLayer = AVPlayerLayer(player: player)
         layer.backgroundColor = UIColor.white.cgColor

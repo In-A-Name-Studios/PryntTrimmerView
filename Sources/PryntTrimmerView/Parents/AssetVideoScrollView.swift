@@ -51,7 +51,7 @@ class AssetVideoScrollView: UIScrollView {
         contentSize = contentView.bounds.size
     }
 
-    internal func regenerateThumbnails(for asset: AVAsset) {
+    internal func regenerateThumbnails(for asset: AVPlayerItem) {
         guard let thumbnailSize = getThumbnailFrameSize(from: asset), thumbnailSize.width != 0 else {
             print("Could not calculate the thumbnail size.")
             return
@@ -67,8 +67,8 @@ class AssetVideoScrollView: UIScrollView {
         generateImages(for: asset, at: timesForThumbnail, with: thumbnailSize, visibleThumnails: visibleThumbnailsCount)
     }
 
-    private func getThumbnailFrameSize(from asset: AVAsset) -> CGSize? {
-        guard let track = asset.tracks(withMediaType: AVMediaType.video).first else { return nil}
+    private func getThumbnailFrameSize(from asset: AVPlayerItem) -> CGSize? {
+        guard let track = asset.asset.tracks(withMediaType: AVMediaType.video).first else { return nil}
 
         let assetSize = track.naturalSize.applying(track.preferredTransform)
 
@@ -82,7 +82,7 @@ class AssetVideoScrollView: UIScrollView {
         contentView.subviews.forEach({ $0.removeFromSuperview() })
     }
 
-    private func setContentSize(for asset: AVAsset) -> CGSize {
+    private func setContentSize(for asset: AVPlayerItem) -> CGSize {
 
         let contentWidthFactor = CGFloat(max(1, asset.duration.seconds / maxDuration))
         widthConstraint?.isActive = false
@@ -115,7 +115,7 @@ class AssetVideoScrollView: UIScrollView {
         }
     }
 
-    private func getThumbnailTimes(for asset: AVAsset, numberOfThumbnails: Int) -> [NSValue] {
+    private func getThumbnailTimes(for asset: AVPlayerItem, numberOfThumbnails: Int) -> [NSValue] {
         let timeIncrement = (asset.duration.seconds * 1000) / Double(numberOfThumbnails)
         var timesForThumbnails = [NSValue]()
         for index in 0..<numberOfThumbnails {
@@ -126,9 +126,10 @@ class AssetVideoScrollView: UIScrollView {
         return timesForThumbnails
     }
 
-    private func generateImages(for asset: AVAsset, at times: [NSValue], with maximumSize: CGSize, visibleThumnails: Int) {
-        generator = AVAssetImageGenerator(asset: asset)
+    private func generateImages(for asset: AVPlayerItem, at times: [NSValue], with maximumSize: CGSize, visibleThumnails: Int) {
+        generator = AVAssetImageGenerator(asset: asset.asset)
         generator?.appliesPreferredTrackTransform = true
+        generator?.videoComposition = asset.videoComposition
 
         let scaledSize = CGSize(width: maximumSize.width * UIScreen.main.scale, height: maximumSize.height * UIScreen.main.scale)
         generator?.maximumSize = scaledSize

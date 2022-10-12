@@ -107,7 +107,7 @@ public class ThumbSelectorView: AVAssetTimeSelector {
 
     // MARK: - Thumbnail Generation
 
-    override func assetDidChange(newAsset: AVAsset?) {
+    override func assetDidChange(newAsset: AVPlayerItem?) {
         if let asset = newAsset {
             setupThumbnailGenerator(with: asset)
             leftThumbConstraint?.constant = 0
@@ -116,16 +116,17 @@ public class ThumbSelectorView: AVAssetTimeSelector {
         super.assetDidChange(newAsset: newAsset)
     }
 
-    private func setupThumbnailGenerator(with asset: AVAsset) {
-        generator = AVAssetImageGenerator(asset: asset)
+    private func setupThumbnailGenerator(with asset: AVPlayerItem) {
+        generator = AVAssetImageGenerator(asset: asset.asset)
+        generator?.videoComposition = asset.videoComposition
         generator?.appliesPreferredTrackTransform = true
         generator?.requestedTimeToleranceAfter = CMTime.zero
         generator?.requestedTimeToleranceBefore = CMTime.zero
         generator?.maximumSize = getThumbnailFrameSize(from: asset) ?? CGSize.zero
     }
 
-    private func getThumbnailFrameSize(from asset: AVAsset) -> CGSize? {
-        guard let track = asset.tracks(withMediaType: AVMediaType.video).first else { return nil}
+    private func getThumbnailFrameSize(from asset: AVPlayerItem) -> CGSize? {
+        guard let track = asset.asset.tracks(withMediaType: AVMediaType.video).first else { return nil}
 
         let assetSize = track.naturalSize.applying(track.preferredTransform)
 
